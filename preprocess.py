@@ -17,7 +17,8 @@ def remove_background(image):
         image with backgroud set to black
     """
     
-    # TODO: experiment for param of GaussianBlur and OSTU threshold
+    # TODO: experiment for param of GaussianBlur and OSTU threshold for better
+    #       removing background
     mask = cv2.GaussianBlur(image, (15,15), 0)
     _,mask = cv2.threshold(mask,0,255,cv2.THRESH_OTSU)
 
@@ -68,7 +69,7 @@ def get_medial_axis(image):
 #   do we need Canny Algorithm (the following) for edge detector
 #   experiment for params if needed
 def detect_edges(image):
-    
+
     image = cv2.Canny(image, 100, 200) 
 
     return image
@@ -108,7 +109,7 @@ def preprocess1(image):
 
 
     # Morphology for reducing noice
-    # TODO: do we need morphology for preprocessing1
+    # TODO: do we need morphology for preprocessing1 (currently not applied)
     # TODO: experiment for arguments of morphology
 
     # kernel_close = np.ones((5,5),np.uint8)
@@ -119,6 +120,9 @@ def preprocess1(image):
 
     # Thinning for getting skeleton of nanotubes
     image = thinning(image, 35)
+
+    # TODO: any processing after thinning? there are still small dots/sticks 
+    #       noise in the skeleton image
 
     return image
 
@@ -167,6 +171,9 @@ def preprocess2(image):
     # Thinning for getting one-pixel-width edges of nanotubes
     image = thinning(image)
 
+    # TODO: any processing after thinning? there are still small dots/sticks 
+    #       noise in the edge image
+
     return image
 
 
@@ -182,17 +189,18 @@ if __name__ == "__main__":
     ori_image = ori_image[:2049] 
 
 
-    # """preprocess 1"""
-    # image = preprocess1(ori_image)
+    """test preprocess 1"""
+    image = preprocess1(ori_image)
 
-    # # stack preprocessed image over original image for visualizing result
-    # image = cv2.bitwise_or(image, ori_image)
-    # cv2.imwrite('results/preprocess_1_method1.jpg', image)
+    # stack preprocessed image over original image for visualizing result
+    image = cv2.bitwise_or(image, ori_image)
+    cv2.imwrite('results/preprocess_1_method1.jpg', image)
 
 
-    """preprocess 2"""
+    """test preprocess 2"""
     image = preprocess2(ori_image)
     # stack preprocessed image over original image for visualizing result
     image = cv2.bitwise_or(image, ori_image)
 
     cv2.imwrite('results/preprocess_1_method2.jpg', image)
+
