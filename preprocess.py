@@ -170,6 +170,7 @@ def preprocess2(image):
     return image
 
 
+# TODO: come up with better preprocess methods ???
 
 
 """Tests of this module"""
