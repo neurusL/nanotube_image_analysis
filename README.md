@@ -1,3 +1,3 @@
 # nanotube_image_analysis
 
-# to be filled...
+# TODO: fill README after we finished code writing

@@ -1,10 +1,8 @@
 import cv2
 import numpy as np
 
-# TODO: get scale of cnt sample image
 def get_scale(image, N):
-    """_summary_
-
+    """
     Args:
         image: image to find scale_bar
         N (int): scale_bar corresponds to real distance in nanometer
@@ -46,7 +44,9 @@ def get_scale(image, N):
     return N / scale_pixels, scale_pixels, first_non_image_row, left_idx, right_idx
 
 
-# TODO: naive method getting average inter-nanotube distance
+# naive method getting average inter-nanotube distance
+# TODO: adapt following functions for our latest version of preprocessing (edge_detecting)
+
 def get_row_ave(image_line):
     """
     Args:
@@ -162,6 +162,4 @@ def get_ave_distance(image, show_contour = True):
 
     return round(average_nm, 7), image
 
-
-# TODO: * more advanced, accurate method to calucalte avergae inter-nanotube distance
 

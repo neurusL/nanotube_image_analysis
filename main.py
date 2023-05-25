@@ -3,6 +3,9 @@ from matplotlib import pyplot as plt
 from utils import *
 
 def main():
+
+    # TODO: modify main function to get better visualized result
+
     images = []
     tested_dists = [101.6719893, 120.9297889, 119.9225223]
     images.append(cv2.imread('data/Sample P297 w- Characterization/wafers4 2nm_80kx_n2.tif', cv2.IMREAD_GRAYSCALE))
@@ -27,7 +30,7 @@ def main():
         plt.xticks([]),plt.yticks([])
     
     # plt.show()
-    plt.savefig("tests/output.pdf", bbox_inches='tight', dpi=600)
+    plt.savefig("results/output.pdf", bbox_inches='tight', dpi=600)
 
     # for image in [i]:
     # tested
