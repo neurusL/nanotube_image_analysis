@@ -1,4 +1,4 @@
-# nanotube_image_analysis
+# Nanotube Image Analysis
 
 Description of project to be filled...
 
