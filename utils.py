@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from preprocess import *
 
 def get_scale(image, N):
     """
@@ -111,7 +112,7 @@ def get_ave(image, test_range):
     return sum_ave / (y2-y1), total_intersect
         
 
-def get_ave_distance(image, show_contour = True):
+def get_ave_distance(image, show_contour = False):
     """
     Args:
         image: image to be processed 
@@ -131,24 +132,22 @@ def get_ave_distance(image, show_contour = True):
             |T|                               |T|
              |<---center-to-center distance--->|
     """
+    
     # Get Scale bar
     pixel_scale, scale, y, x1, x2 = get_scale(image, 500)
     # visualize indeed get scale bar (for debug)
     # image = cv2.circle(image, center=(x1, y), radius=5, color=(255,0,0), thickness=-1)
     # image = cv2.circle(image, center=(x2, y), radius=5, color=(255,0,0), thickness=-1)
 
+    # Crop out the area for 
+    image_width = image.shape[1]
+    origin_image = image[:(image_width+1)]
 
-    # Process the image
-    # Ostu's thresholding after Gaussian filtering                      
-    image = cv2.GaussianBlur(image, (15,45), 0)
-    _,image = cv2.threshold(image,0,255,cv2.THRESH_OTSU)
-
-    # Or we can simply use Binary thresholding
-    # _,image = cv2.threshold(image,95,255,cv.THRESH_BINARY)
-
+    # Preprocess the image
+    image = preprocess1(origin_image)
 
     # Calculate inter tube average distance
-    test_range = ((0, image.shape[1]), (0, y))
+    test_range = ((0, image_width), (0, y))
     average, all_intersects = get_ave(image, test_range)
     average_nm = average * pixel_scale
 
