@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt 
 from skimage.morphology import skeletonize, medial_axis, thin
 from utils import *
 
@@ -178,29 +177,3 @@ def preprocess2(image):
 
 
 # TODO: come up with better preprocess methods ???
-
-
-"""Tests of this module"""
-
-if __name__ == "__main__":
-
-    
-    ori_image = cv2.imread('data/CNT Sample 1.tif', cv2.IMREAD_GRAYSCALE)
-    ori_image = ori_image[:2049] 
-
-
-    """test preprocess 1"""
-    image = preprocess1(ori_image)
-
-    # stack preprocessed image over original image for visualizing result
-    image = cv2.bitwise_or(image, ori_image)
-    cv2.imwrite('results/preprocess_1_method1.jpg', image)
-
-
-    """test preprocess 2"""
-    image = preprocess2(ori_image)
-    # stack preprocessed image over original image for visualizing result
-    image = cv2.bitwise_or(image, ori_image)
-
-    cv2.imwrite('results/preprocess_1_method2.jpg', image)
-

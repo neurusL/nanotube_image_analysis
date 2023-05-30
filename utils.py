@@ -2,6 +2,20 @@ import cv2
 import numpy as np
 from preprocess import *
 
+def cropout_sidebar(image):
+    """
+    Args:
+        image (image): image to be cropped out area of nanotubes
+    Returns:
+        image (image): image of nanotubes
+    """
+    # We exploit sample image features
+    y = image.shape[1]
+    image = image[:(y+1)]
+
+    return image
+    
+
 def get_scale(image, N):
     """
     Args:
@@ -10,39 +24,30 @@ def get_scale(image, N):
 
     Returns:
         N / scale_pixels: nanometer one pixel corresponds to 
-        scale_pixels:     pixels N nanometer corresponds to 
-        first_non_image_row: first row of image comments
+        y: first row of image sidebar
         left_idx: left x coordinate of scale bar
         right_idx: right x coordinate of scale bar
     """
-    original_image = image
 
-    # We exploit sample image 
-    first_non_image_row = image.shape[1]
-
-    # After getting first_all_white_row, we extract scale from original_image
+    # we extract scale from original_image
+    y = image.shape[1]
     left_idx, right_idx = 0, 0
-    first_all_white = original_image[first_non_image_row]
-    # print(first_all_white)
-
+    sidebar_row = image[y+1]
 
     for col in range(image.shape[1]-1):
         if (left_idx == 0
-            and (first_all_white[col] == 255)
-            and (first_all_white[col+1] != 255)):
+            and (sidebar_row[col] == 255)
+            and (sidebar_row[col+1] != 255)):
             left_idx = col
 
         if (left_idx != 0
-            and (first_all_white[col] != 255)
-            and (first_all_white[col+1] == 255)):
+            and (sidebar_row[col] != 255)
+            and (sidebar_row[col+1] == 255)):
             right_idx = col
-
-    # print(left_idx)
-    # print(right_idx)
     
     scale_pixels = right_idx - left_idx
 
-    return N / scale_pixels, scale_pixels, first_non_image_row, left_idx, right_idx
+    return N / scale_pixels, y, left_idx, right_idx
 
 
 # naive method getting average inter-nanotube distance
@@ -112,11 +117,11 @@ def get_ave(image, test_range):
     return sum_ave / (y2-y1), total_intersect
         
 
-def get_ave_distance(image, show_contour = False):
+def get_ave_distance(image, pixel_scale, show_contour = False):
     """
     Args:
         image: image to be processed 
-        save_path (string): path to save processed image
+        pixel_scale (float): nanometer one pixel corresponds to 
         show_contour (bool, optional): 
             if set to True, contour of tubes will be
             highlighted in saved image, used for testing if we indeed find tubes
@@ -132,19 +137,12 @@ def get_ave_distance(image, show_contour = False):
             |T|                               |T|
              |<---center-to-center distance--->|
     """
-    
-    # Get Scale bar
-    pixel_scale, scale, y, x1, x2 = get_scale(image, 500)
-    # visualize indeed get scale bar (for debug)
-    # image = cv2.circle(image, center=(x1, y), radius=5, color=(255,0,0), thickness=-1)
-    # image = cv2.circle(image, center=(x2, y), radius=5, color=(255,0,0), thickness=-1)
-
-    # Crop out the area for 
+    ori_image = image
+    y = image.shape[0]
     image_width = image.shape[1]
-    origin_image = image[:(image_width+1)]
 
     # Preprocess the image
-    image = preprocess1(origin_image)
+    image = preprocess1(ori_image)
 
     # Calculate inter tube average distance
     test_range = ((0, image_width), (0, y))
