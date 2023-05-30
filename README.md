@@ -6,14 +6,19 @@ Description of project to be filled...
 The program is developed under:
 `Python`      3.9.13    \
 And following modules are used: \
-`skimage`     0.19.2  (requires Python >= 3.6)  \
+`scikit-image`     0.19.2  (requires Python >= 3.6)  \
 `matplotlib`  3.5.2         \
-`cv2`         4.7.0         \
+`cv2`         4.7.0.72         \
 `NumPy`       1.21.5        \
 
 If any of above module is not installed, use the package manager [pip](https://pip.pypa.io/en/stable/) to install 
 ```bash
 pip3 install <module>
+```
+Or install all above using
+```bash
+pip3 install -r requirements.txt
+
 ```
 ## Usage 
 ```bash
