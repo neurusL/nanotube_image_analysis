@@ -31,12 +31,10 @@ processed image **stacked over original image** and calculated itds
 
  | arguments | descriptions |
  | :--- | :--- |
- | ```-h, --help```            |show this help message and exit |
- | ```-m mode, --mode mode```  |mode can be: example, without-origin, or  |over-origin
- | ```-l image load path, --loadpath image load path```
-                        | path of image to be loaded |
- |```-s image save path, --savepath image save path```
-                        | path to save image, default is in /result |
+ | ```-h, --help```            | show this help message and exit |
+ | ```-m mode, --mode mode```  | mode can be: example, without-origin, or over-origin |
+ | ```-l image load path, --loadpath image load path``` | path of image to be loaded |
+ | ```-s image save path, --savepath image save path``` | path to save image, default is in /result |
 
 ## Examples
 ```bash
