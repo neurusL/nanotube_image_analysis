@@ -4,12 +4,12 @@ Description of project to be filled...
 
 ## Environment 
 The program is developed under:
-`Python`      3.9.13
-And following modules are used:
-`skimage`     0.19.2  (requires Python >= 3.6)
-`matplotlib`  3.5.2  
-`cv2`         4.7.0   
-`NumPy`       1.21.5  
+`Python`      3.9.13    \
+And following modules are used: \
+`skimage`     0.19.2  (requires Python >= 3.6)  \
+`matplotlib`  3.5.2         \
+`cv2`         4.7.0         \
+`NumPy`       1.21.5        \
 
 If any of above module is not installed, use the package manager [pip](https://pip.pypa.io/en/stable/) to install 
 ```bash
@@ -34,7 +34,7 @@ processed image **stacked over original image** and calculated itds
  | ```-h, --help```            | show this help message and exit |
  | ```-m mode, --mode mode```  | mode can be: example, without-origin, or over-origin |
  | ```-l image load path, --loadpath image load path``` | path of image to be loaded |
- | ```-s image save path, --savepath image save path``` | path to save image, default is in /result |
+ | ```-s image save path, --savepath image save path``` | path to save image, default is in ```/result``` |
 
 ## Examples
 ```bash
