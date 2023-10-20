@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from preprocess import *
+from largestcircle import *
 
 def cropout_sidebar(image):
     """
@@ -158,5 +159,22 @@ def get_ave_distance(image, pixel_scale, show_contour = False):
                 cv2.circle(image, center=(x, i), radius=2, color=(0,0,255), thickness=-1)
 
     return round(average_nm, 7), image
+
+def get_largest_fit_circle(image, pixel_scale):
+    # preprocess image
+    proc_image = preprocess(image)
+
+    # find largest circle
+    (max_row, max_col, max_radius) = find_largest_circle(proc_image)
+    max_radius_nm = max_radius * pixel_scale
+    proc_image = cv2.circle(proc_image, (max_col, max_row), max_radius, (255,255,255), 2)
+    image_new = cv2.circle(image, (max_col, max_row), max_radius, (255,255,255), 2)
+
+
+    return round(max_radius_nm, 7), proc_image, image_new
+
+
+
+
 
 

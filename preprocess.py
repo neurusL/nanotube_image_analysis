@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 from skimage.morphology import skeletonize, medial_axis, thin
-from utils import *
 
 
 """ Tools for preprocessing images
@@ -78,6 +77,26 @@ def detect_edges(image):
 """Preprocessing functions
 """
 
+def preprocess(image):
+    # equalizeHist
+    image = cv2.equalizeHist(image)
+    # cv2.imwrite("results/00img_equalizeHist.jpg", image)
+
+
+    # Remove background 
+    image = remove_background(image)
+    # cv2.imwrite("results/01background_removed.jpg", image)
+ 
+    # Gaussian Blur   
+    image = cv2.GaussianBlur(image, (5,5), 0)
+    # cv2.imwrite("results/03gaussian_blur.jpg", image)
+
+    # Binarization 
+    # Ostu's thresholding after Gaussian filtering  
+    _,image = cv2.threshold(image,0,255,cv2.THRESH_OTSU)
+
+    return image
+
 def preprocess1(image):
     """_summary_
        this method first gets color blocks of foreground nanotubes in image,
@@ -86,42 +105,11 @@ def preprocess1(image):
        inter tube distance. 
     
     """
-    # equalizeHist
-    # TODO: do we neeed equalizedHist 
-    image = cv2.equalizeHist(image)
-
-    # Remove background 
-    image = remove_background(image)
-
-
-    # Gaussian Blur   
-    # TODO: experiment for proper kernel size of Gaussian Blur               
-    image = cv2.GaussianBlur(image, (5,5), 0)
-
-    # Binarization 
-    # TODO: experiment for type of thresholding
-    # TODO: experiment for arguments of corresponding thresholding
-    # Ostu's thresholding after Gaussian filtering  
-    _,image = cv2.threshold(image,0,255,cv2.THRESH_OTSU)
-
-    # TODO: you can visualize up to now what does the image looks like
-
-
-    # Morphology for reducing noice
-    # TODO: do we need morphology for preprocessing1 (currently not applied)
-    # TODO: experiment for arguments of morphology
-
-    # kernel_close = np.ones((5,5),np.uint8)
-    # image = cv2.morphologyEx(image, cv2.MORPH_CLOSE, kernel_close)
-
-    # kernel_open = np.ones((3,3),np.uint8)
-    # image = cv2.morphologyEx(image, cv2.MORPH_OPEN, kernel_open)
+    image = preprocess(image)
 
     # Thinning for getting skeleton of nanotubes
     image = thinning(image, 35)
-
-    # TODO: any processing after thinning? there are still small dots/sticks 
-    #       noise in the skeleton image
+    # cv2.imwrite("results/05thinning.jpg", image)
 
     return image
 
@@ -137,26 +125,20 @@ def preprocess2(image):
     """
 
     # equalizeHist
-    # TODO: do we neeed equalizedHist 
     image = cv2.equalizeHist(image)
 
     # Remove background 
     image = remove_background(image)
-    
+
     # Gaussian Blur
-    # TODO: experiment for proper kernel size of Gaussian Blur  
     image = cv2.GaussianBlur(image, (5,5), 0)
 
     # Binarization 
-    # TODO: experiment for type of thresholding
-    # TODO: experiment for arguments of corresponding thresholding
     # Adaptive_mean thresholding after Gaussian filtering  
     image = cv2.adaptiveThreshold(image, 255, cv2.ADAPTIVE_THRESH_MEAN_C, 
                                        cv2.THRESH_BINARY, 21, 10)
 
     # Morphology for reducing noice
-    # TODO: do we need morphology for preprocessing2
-    # TODO: experiment for arguments of morphology
     kernel_open = np.ones((5,5),np.uint8)
     image = cv2.morphologyEx(image, cv2.MORPH_OPEN, kernel_open)
 
@@ -165,15 +147,7 @@ def preprocess2(image):
 
     image = cv2.bitwise_not(image)
 
-    # TODO: you can visualize up to now what does the image looks like
-
     # Thinning for getting one-pixel-width edges of nanotubes
     image = thinning(image)
 
-    # TODO: any processing after thinning? there are still small dots/sticks 
-    #       noise in the edge image
-
     return image
-
-
-# TODO: come up with better preprocess methods ???
